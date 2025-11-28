@@ -66,18 +66,21 @@ export default function Contacto() {
         }
 
   // ================================
-  // 📌 BANNER MOBILE SEGÚN IDIOMA
+  // 📌 BANNERS SEGÚN IDIOMA
   // ================================
-
   const mobileBanner =
     lang === "en"
-      ? "/images/contact-banner-mobile.png" // El que tiene "Contact"
-      : "/images/contacto-banner-mobile.png" // El que tiene "Contacto"
+      ? "/images/contact-banner-mobile.png" // "Contact"
+      : "/images/contacto-banner-mobile.png" // "Contacto"
+
+  const desktopBanner =
+    lang === "en"
+      ? "/images/web-land-filo-meto-en.jpg"
+      : "/images/web-land-filo-meto.jpg"
 
   // ============================
   // 📌 HANDLERS
   // ============================
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -156,7 +159,7 @@ export default function Contacto() {
         viewport={{ once: true, amount: 0.5 }}
       >
         <Image
-          src="/images/web-land-filo-meto.jpg"
+          src={desktopBanner}
           alt="LAND message"
           fill
           className="object-cover"
@@ -167,7 +170,6 @@ export default function Contacto() {
       {/* ===================== */}
       {/* TEXTO + FORMULARIO   */}
       {/* ===================== */}
-
       <div className="max-w-6xl mx-auto px-6 lg:px-10 text-white space-y-10">
         <div className="grid md:grid-cols-2 gap-12">
           {/* INFO */}
