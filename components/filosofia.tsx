@@ -62,16 +62,14 @@ export default function Filosofia() {
           </div>
         </div>
 
-
         {/* ======================================================
-            BLOQUE 1 — TEXTO: NUESTRA MANERA + Ground-Truth / End-to-End (solo desktop se reorganiza)
+            BLOQUE 1 — TEXTO
         ====================================================== */}
         <div className="max-w-7xl mx-auto px-6 md:px-8 mt-10 md:mt-14">
           <div
             className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 mb-14 md:mb-16 pb-10 md:pb-16 border-b"
             style={{ borderColor }}
           >
-
             {/* COLUMNA IZQUIERDA — SOLO DESKTOP */}
             <div className="hidden md:flex items-start">
               <h2
@@ -112,9 +110,8 @@ export default function Filosofia() {
         </div>
       </div>
 
-
       {/* ======================================================
-          BLOQUE 2 — FILOSOFÍA MÉTODO + TARJETAS (mobile + desktop)
+          BLOQUE 2 — FILOSOFÍA MÉTODO + TARJETAS
       ====================================================== */}
       <div className="max-w-7xl mx-auto px-6 md:px-8 mb-8 md:mb-10">
         <SectionLabel label="Filosofía Método" />
@@ -125,7 +122,6 @@ export default function Filosofia() {
 
           {/* Tarjetas — mobile 1 columna / desktop 3 columnas */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-
             {[
               {
                 title: "MISIÓN",
@@ -145,38 +141,44 @@ export default function Filosofia() {
                   "Crear proyectos que trasciendan. Convirtiendo el desarrollo en una forma de mejorar el entorno y de proyectar el futuro.",
                 iconSrc: "/images/simbolo-03.png",
               },
-            ].map((item) => (
-              <motion.div
-                key={item.title}
-                className="
-                  bg-[#b8b1a7]
-                  px-6 py-6 md:px-8 md:py-8
-                  grid grid-cols-[75px_1fr] md:grid-cols-1
-                  gap-6
-                  items-center
-                "
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                {/* Ícono centrado */}
-                <div className="flex items-center justify-center md:mb-6">
-                  <img src={item.iconSrc} alt={item.title} className="h-16 w-auto" />
-                </div>
+            ].map((item, index) => {
+              const fromLeft = index === 0 || index === 2 // 1ª y 3ª desde la izquierda
+              return (
+                <motion.div
+                  key={item.title}
+                  className="
+                    bg-[#b8b1a7]
+                    px-6 py-6 md:px-8 md:py-8
+                    grid grid-cols-[75px_1fr] md:grid-cols-1
+                    gap-6
+                    items-center
+                  "
+                  initial={{ opacity: 0, x: fromLeft ? -80 : 80 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 1.0,
+                    ease: "easeInOut",
+                    delay: index * 0.1,
+                  }}
+                  viewport={{ once: true, amount: 0.3 }}
+                >
+                  {/* Ícono centrado */}
+                  <div className="flex items-center justify-center md:mb-6">
+                    <img src={item.iconSrc} alt={item.title} className="h-16 w-auto" />
+                  </div>
 
-                {/* Texto */}
-                <div className="text-white text-left md:text-center">
-                  <h3 className="text-sm md:text-base font-semibold tracking-[0.18em] mb-2 md:mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm md:text-[0.95rem] leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-
+                  {/* Texto */}
+                  <div className="text-white text-left md:text-center">
+                    <h3 className="text-sm md:text-base font-semibold tracking-[0.18em] mb-2 md:mb-3">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm md:text-[0.95rem] leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              )
+            })}
           </div>
 
           {/* Línea inferior */}
