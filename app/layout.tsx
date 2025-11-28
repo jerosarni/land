@@ -5,6 +5,9 @@ import { Geist, Geist_Mono, Playfair_Display } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
+// 👇 IMPORTANTE: importar el LanguageProvider
+import { LanguageProvider } from "@/components/language-context"
+
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 const _playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" })
@@ -39,10 +42,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={_playfair.variable}>
+    <html lang="en" className={_playfair.variable}>
       <body className={`font-sans antialiased`}>
-        {children}
-        <Analytics />
+        <LanguageProvider>
+          {children}
+          <Analytics />
+        </LanguageProvider>
       </body>
     </html>
   )

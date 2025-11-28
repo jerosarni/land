@@ -7,6 +7,7 @@ import { motion } from "framer-motion"
 
 import { palette } from "@/lib/palette"
 import { SectionLabel } from "./section-label"
+import { useLanguage } from "@/components/language-context"
 
 const proyectos = [
   {
@@ -115,6 +116,15 @@ const getMobileImage = (src: string) => {
 
 export default function ProyectosDestacados() {
   const [current, setCurrent] = useState(0)
+  const { lang } = useLanguage()
+
+  // Aplica sufijo -en cuando está en inglés
+  const localized = (src: string) => {
+    if (lang !== "en") return src
+    const dotIndex = src.lastIndexOf(".")
+    if (dotIndex === -1) return `${src}-en`
+    return `${src.slice(0, dotIndex)}-en${src.slice(dotIndex)}`
+  }
 
   const handlePrev = () => {
     setCurrent((prev) => (prev === 0 ? proyectos.length - 1 : prev - 1))
@@ -141,10 +151,12 @@ export default function ProyectosDestacados() {
           viewport={{ once: true }}
           className="px-6 lg:px-10"
         >
-          <SectionLabel label="Proyectos Destacados" />
+          <SectionLabel
+            label={lang === "en" ? "Featured Projects" : "Proyectos Destacados"}
+          />
         </motion.div>
 
-        {/* ----- MOBILE: carrusel con imagen -mobile completa ----- */}
+        {/* ----- MOBILE: carrusel con imagen -mobile ----- */}
         <div className="md:hidden">
           <div className="relative w-full">
             <motion.div
@@ -154,7 +166,7 @@ export default function ProyectosDestacados() {
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
               <Image
-                src={getMobileImage(proyecto.image)}
+                src={localized(getMobileImage(proyecto.image))}
                 alt={proyecto.name}
                 width={1200}
                 height={1800}
@@ -176,7 +188,7 @@ export default function ProyectosDestacados() {
               className="absolute inset-0"
             >
               <Image
-                src={proyecto.image}
+                src={localized(proyecto.image)}
                 alt={proyecto.name}
                 fill
                 className="object-cover"
@@ -187,7 +199,7 @@ export default function ProyectosDestacados() {
           </div>
         </div>
 
-        {/* ----- CONTROLES: flechas + puntos (mobile + desktop) ----- */}
+        {/* ----- CONTROLES: flechas + puntos ----- */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

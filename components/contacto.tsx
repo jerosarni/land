@@ -7,8 +7,11 @@ import { motion } from "framer-motion"
 
 import { palette } from "@/lib/palette"
 import { SectionLabel } from "./section-label"
+import { useLanguage } from "@/components/language-context"
 
 export default function Contacto() {
+  const { lang } = useLanguage()
+
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -16,9 +19,68 @@ export default function Contacto() {
     mensaje: "",
   })
 
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle")
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
+    "idle"
+  )
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // ============================
+  // 📌 TEXTOS EN / ES
+  // ============================
+  const copy =
+    lang === "en"
+      ? {
+          sectionLabel: "Contact",
+          emailLabel: "E-mail:",
+          fields: [
+            { name: "nombre", label: "Name" },
+            { name: "email", label: "Email" },
+            { name: "asunto", label: "Subject" },
+          ] as const,
+          messageLabel: "Message",
+          buttonIdle: "Send",
+          buttonSending: "Sending...",
+          successTag: "Thank you",
+          successText:
+            "Thank you for your message. We will get back to you shortly.",
+          errorText:
+            "An error occurred while sending your message. Please try again.",
+          subjectPrefix: "New message from LAND DV",
+        }
+      : {
+          sectionLabel: "Contacto",
+          emailLabel: "E-Mail:",
+          fields: [
+            { name: "nombre", label: "Nombre" },
+            { name: "email", label: "Email" },
+            { name: "asunto", label: "Asunto" },
+          ] as const,
+          messageLabel: "Mensaje",
+          buttonIdle: "Enviar",
+          buttonSending: "Enviando...",
+          successTag: "Gracias",
+          successText:
+            "Gracias por enviarnos tu mensaje. Nos pondremos en contacto a la brevedad.",
+          errorText:
+            "Ocurrió un error al enviar el mensaje. Por favor, inténtalo nuevamente.",
+          subjectPrefix: "Nuevo mensaje desde LAND DV",
+        }
+
+  // ================================
+  // 📌 BANNER MOBILE SEGÚN IDIOMA
+  // ================================
+
+  const mobileBanner =
+    lang === "en"
+      ? "/images/contact-banner-mobile.png" // El que tiene "Contact"
+      : "/images/contacto-banner-mobile.png" // El que tiene "Contacto"
+
+  // ============================
+  // 📌 HANDLERS
+  // ============================
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
@@ -39,18 +101,20 @@ export default function Contacto() {
           email: formData.email,
           asunto: formData.asunto,
           mensaje: formData.mensaje,
-          _subject: `Nuevo mensaje desde LAND DV: ${formData.asunto || "Contacto web"}`,
+          _subject: `${copy.subjectPrefix}: ${
+            formData.asunto ||
+            (lang === "en" ? "Web contact" : "Contacto web")
+          }`,
         }),
       })
 
       if (!response.ok) {
-        throw new Error("Error al enviar")
+        throw new Error("Error")
       }
 
       setStatus("success")
       setFormData({ nombre: "", email: "", asunto: "", mensaje: "" })
-    } catch (error) {
-      console.error(error)
+    } catch {
       setStatus("error")
     }
   }
@@ -62,7 +126,7 @@ export default function Contacto() {
       style={{ backgroundColor: palette.stone }}
     >
       {/* ===================== */}
-      {/* CABECERA MOBILE NUEVA */}
+      {/* BANNER MOBILE         */}
       {/* ===================== */}
       <motion.div
         className="md:hidden relative w-full"
@@ -72,8 +136,8 @@ export default function Contacto() {
         viewport={{ once: true, amount: 0.4 }}
       >
         <Image
-          src="/images/contacto-banner-mobile.png" 
-          alt="LAND Global Group mensaje"
+          src={mobileBanner}
+          alt={copy.sectionLabel}
           width={1200}
           height={600}
           className="w-full h-auto"
@@ -81,9 +145,9 @@ export default function Contacto() {
         />
       </motion.div>
 
-      {/* ========================== */}
-      {/* CABECERA DESKTOP ORIGINAL */}
-      {/* ========================== */}
+      {/* ===================== */}
+      {/* BANNER DESKTOP        */}
+      {/* ===================== */}
       <motion.div
         className="relative w-full h-[320px] sm:h-[380px] lg:h-[420px] hidden md:block"
         initial={{ opacity: 0, scale: 1.03 }}
@@ -93,20 +157,20 @@ export default function Contacto() {
       >
         <Image
           src="/images/web-land-filo-meto.jpg"
-          alt="Mensaje corporativo LAND Global Group"
+          alt="LAND message"
           fill
           className="object-cover"
           priority
         />
       </motion.div>
 
-      {/* ========================== */}
-      {/* CONTENIDO + FORMULARIO     */}
-      {/* ========================== */}
+      {/* ===================== */}
+      {/* TEXTO + FORMULARIO   */}
+      {/* ===================== */}
+
       <div className="max-w-6xl mx-auto px-6 lg:px-10 text-white space-y-10">
         <div className="grid md:grid-cols-2 gap-12">
-
-          {/* Columna izquierda */}
+          {/* INFO */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -114,7 +178,7 @@ export default function Contacto() {
             viewport={{ once: true, amount: 0.4 }}
           >
             <SectionLabel
-              label="Contacto"
+              label={copy.sectionLabel}
               color="#ffffff"
               arrowColor="#ffffff"
               className="mb-10"
@@ -130,7 +194,8 @@ export default function Contacto() {
               />
 
               <p>
-                <span className="font-semibold">E-Mail:</span> info@landdv.com
+                <span className="font-semibold">{copy.emailLabel}</span>{" "}
+                info@landdv.com
               </p>
 
               <p>
@@ -141,7 +206,7 @@ export default function Contacto() {
             </div>
           </motion.div>
 
-          {/* Formulario */}
+          {/* FORM */}
           <motion.form
             onSubmit={handleSubmit}
             className="space-y-6"
@@ -150,11 +215,7 @@ export default function Contacto() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ once: true, amount: 0.4 }}
           >
-            {[
-              { name: "nombre", label: "Nombre" },
-              { name: "email", label: "Email" },
-              { name: "asunto", label: "Asunto" },
-            ].map((field) => (
+            {copy.fields.map((field) => (
               <div key={field.name}>
                 <label className="text-sm uppercase tracking-[0.35em]">
                   {field.label}
@@ -171,7 +232,9 @@ export default function Contacto() {
             ))}
 
             <div>
-              <label className="text-sm uppercase tracking-[0.35em]">Mensaje</label>
+              <label className="text-sm uppercase tracking-[0.35em]">
+                {copy.messageLabel}
+              </label>
               <textarea
                 name="mensaje"
                 required
@@ -190,13 +253,15 @@ export default function Contacto() {
                 whileTap={{ scale: status === "sending" ? 1 : 0.97 }}
                 className="bg-white text-[#7d6d5d] px-10 py-2 rounded-full font-semibold text-sm hover:bg-[#f2f0ec] transition disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {status === "sending" ? "Enviando..." : "Enviar"}
+                {status === "sending"
+                  ? copy.buttonSending
+                  : copy.buttonIdle}
               </motion.button>
             </div>
           </motion.form>
         </div>
 
-        {/* Feedback */}
+        {/* SUCCESS */}
         {status === "success" && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.98 }}
@@ -206,15 +271,14 @@ export default function Contacto() {
           >
             <div className="flex flex-col gap-0.5 text-sm md:text-base">
               <span className="font-semibold uppercase tracking-[0.25em] text-xs">
-                Gracias
+                {copy.successTag}
               </span>
-              <span>
-                Gracias por enviarnos tu mensaje. Nos pondremos en contacto a la brevedad.
-              </span>
+              <span>{copy.successText}</span>
             </div>
           </motion.div>
         )}
 
+        {/* ERROR */}
         {status === "error" && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -222,7 +286,7 @@ export default function Contacto() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="max-w-6xl mx-auto rounded-2xl bg-red-600/90 text-white px-6 py-3 text-sm md:text-base"
           >
-            Ocurrió un error al enviar el mensaje. Por favor, inténtalo nuevamente.
+            {copy.errorText}
           </motion.div>
         )}
       </div>

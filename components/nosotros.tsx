@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { palette } from "@/lib/palette"
+import { useLanguage } from "@/components/language-context"
 
 const headlineColor = palette.brown
 const bodyColor = palette.graphite
@@ -9,6 +10,30 @@ const borderColor = palette.sand
 const accentColor = palette.bronze
 
 export default function Nosotros() {
+  const { lang } = useLanguage()
+
+  // 👇 Textos EN / ES definidos acá mismo
+  const copy =
+    lang === "en"
+      ? {
+          label: "About Us",
+          headline: "EVERY PROJECT STARTS FROM THE LAND.",
+          sublead:
+            "There, where the idea is planted, value is built and the future is projected.",
+          p1: "We are a development group with presence in Latin America and the United States.",
+          p2: "We specialize in creating projects with a strong identity, where design, management, and profitability coexist in balance.",
+          taglinePrefix: "This is how",
+        }
+      : {
+          label: "Nosotros",
+          headline: "TODO PROYECTO EMPIEZA EN LA TIERRA.",
+          sublead:
+            "Ahí, donde se siembra la idea es donde se construye el valor y se proyecta el futuro.",
+          p1: "Somos un grupo desarrollador con presencia en Latinoamérica y Estados Unidos.",
+          p2: "Nos especializamos en crear proyectos con identidad, donde diseño, gestión y rentabilidad conviven en equilibrio.",
+          taglinePrefix: "Así nace",
+        }
+
   return (
     <section
       id="nosotros"
@@ -28,13 +53,12 @@ export default function Nosotros() {
           <span className="text-xl" style={{ color: palette.brown }}>
             &gt;
           </span>{" "}
-          Nosotros
+          {copy.label}
         </motion.div>
       </div>
 
       {/* ============= MOBILE VERSION ============= */}
       <div className="block lg:hidden">
-
         {/* 🚧 EXCAVADORA – ENTRA DESDE IZQUIERDA MÁS LENTO */}
         <motion.div
           className="relative px-0"
@@ -51,7 +75,7 @@ export default function Nosotros() {
 
           <div className="absolute left-6 bottom-6 text-white drop-shadow-lg">
             <h2 className="font-serif text-2xl leading-tight uppercase">
-              TODO PROYECTO <br /> EMPIEZA EN LA TIERRA.
+              {copy.headline}
             </h2>
           </div>
         </motion.div>
@@ -80,22 +104,18 @@ export default function Nosotros() {
           transition={{ duration: 1.3, ease: "easeInOut", delay: 0.2 }}
           viewport={{ once: true, amount: 0.4 }}
         >
-          <p>
-            Somos un grupo desarrollador con presencia en Latinoamérica y Estados Unidos.
-          </p>
-          <p>
-            Nos especializamos en crear proyectos con identidad, donde diseño, gestión y rentabilidad conviven en equilibrio.
-          </p>
+          <p>{copy.p1}</p>
+          <p>{copy.p2}</p>
           <p
             className="font-serif tracking-[0.24em] uppercase text-[0.8rem] pt-2"
             style={{ color: accentColor }}
           >
-            Así nace{" "}
+            {copy.taglinePrefix}{" "}
             <span
               className="font-semibold tracking-[0.14em]"
               style={{ color: palette.brown }}
             >
-              LAND GLOBAL GROUP
+              LAND GLOBAL GROUP 
             </span>
           </p>
         </motion.div>
@@ -105,7 +125,6 @@ export default function Nosotros() {
       <div className="hidden lg:block">
         <div className="max-w-[1040px] mx-auto px-4 lg:px-0 pb-0">
           <div className="grid grid-cols-1 lg:grid-cols-[1.02fr_0.98fr] gap-8 items-stretch">
-
             {/* 🚧 EXCAVADORA DESKTOP – LENTO Y FINO */}
             <motion.div
               className="relative max-w-[520px] w-full mx-auto lg:mx-0 lg:-ml-28 -mt-8 lg:-mt-14 -mb-6 lg:-mb-8"
@@ -136,14 +155,13 @@ export default function Nosotros() {
                   className="font-serif text-[28px] lg:text-[38px] leading-[1.2] tracking-[0.08em] uppercase"
                   style={{ color: headlineColor }}
                 >
-                  TODO PROYECTO <br className="hidden lg:block" />
-                  EMPIEZA EN LA TIERRA.
+                  {copy.headline}
                 </h3>
                 <p
                   className="text-[15px] mt-3 leading-relaxed max-w-[380px]"
                   style={{ color: bodyColor }}
                 >
-                  Ahí, donde se siembra la idea es donde se construye el valor y se proyecta el futuro.
+                  {copy.sublead}
                 </p>
               </div>
 
@@ -159,17 +177,13 @@ export default function Nosotros() {
                 className="space-y-3.5 text-[15px] leading-relaxed"
                 style={{ color: bodyColor }}
               >
-                <p>
-                  Somos un grupo desarrollador con presencia en Latinoamérica y Estados Unidos.
-                </p>
-                <p>
-                  Nos especializamos en crear proyectos con identidad, donde diseño, gestión y rentabilidad conviven en equilibrio.
-                </p>
+                <p>{copy.p1}</p>
+                <p>{copy.p2}</p>
                 <p
                   className="font-serif tracking-[0.24em] uppercase text-[0.8rem] pt-3"
                   style={{ color: accentColor }}
                 >
-                  Así nace{" "}
+                  {copy.taglinePrefix}{" "}
                   <span
                     className="font-semibold tracking-[0.14em]"
                     style={{ color: palette.brown }}
@@ -179,7 +193,6 @@ export default function Nosotros() {
                 </p>
               </div>
             </motion.div>
-
           </div>
         </div>
       </div>
