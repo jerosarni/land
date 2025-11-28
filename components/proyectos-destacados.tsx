@@ -162,26 +162,10 @@ export default function ProyectosDestacados() {
                 priority
               />
             </motion.div>
-
-            {/* Botones sobre la imagen */}
-            <button
-              onClick={handlePrev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 rounded-full w-10 h-10 flex items-center justify-center"
-              aria-label="Proyecto anterior"
-            >
-              <ChevronLeft size={22} />
-            </button>
-            <button
-              onClick={handleNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 rounded-full w-10 h-10 flex items-center justify-center"
-              aria-label="Proyecto siguiente"
-            >
-              <ChevronRight size={22} />
-            </button>
           </div>
         </div>
 
-        {/* ----- DESKTOP: deja el hero original tal cual ----- */}
+        {/* ----- DESKTOP: hero grande ----- */}
         <div className="hidden md:block">
           <div className="relative w-full h-[75vh] min-h-[480px] overflow-hidden">
             <motion.div
@@ -200,44 +184,56 @@ export default function ProyectosDestacados() {
                 priority
               />
             </motion.div>
-
-            <button
-              onClick={handlePrev}
-              className="absolute left-8 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-black w-12 h-12 rounded-full flex items-center justify-center transition"
-              aria-label="Proyecto anterior"
-            >
-              <ChevronLeft size={24} />
-            </button>
-
-            <button
-              onClick={handleNext}
-              className="absolute right-8 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-black w-12 h-12 rounded-full flex items-center justify-center transition"
-              aria-label="Proyecto siguiente"
-            >
-              <ChevronRight size={24} />
-            </button>
           </div>
         </div>
 
-        {/* Puntos indicadores (compartidos) */}
+        {/* ----- CONTROLES: flechas + puntos (mobile + desktop) ----- */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="flex justify-center gap-3"
+          className="flex items-center justify-center gap-5"
         >
-          {proyectos.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className="w-2.5 h-2.5 rounded-full transition"
-              style={{
-                backgroundColor: i === current ? palette.brown : palette.sand,
-              }}
-              aria-label={`Ir al proyecto ${i + 1}`}
-            />
-          ))}
+          {/* Flecha izquierda */}
+          <button
+            onClick={handlePrev}
+            aria-label="Proyecto anterior"
+            className="w-10 h-10 flex items-center justify-center rounded-full transition hover:brightness-110 shadow-sm"
+            style={{
+              backgroundColor: palette.brown,
+            }}
+          >
+            <ChevronLeft size={18} color="white" />
+          </button>
+
+          {/* Puntos */}
+          <div className="flex gap-3">
+            {proyectos.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                className="w-2.5 h-2.5 rounded-full transition"
+                style={{
+                  backgroundColor:
+                    i === current ? palette.brown : palette.sand,
+                }}
+                aria-label={`Ir al proyecto ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Flecha derecha */}
+          <button
+            onClick={handleNext}
+            aria-label="Proyecto siguiente"
+            className="w-10 h-10 flex items-center justify-center rounded-full transition hover:brightness-110 shadow-sm"
+            style={{
+              backgroundColor: palette.brown,
+            }}
+          >
+            <ChevronRight size={18} color="white" />
+          </button>
         </motion.div>
       </div>
     </section>

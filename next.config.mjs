@@ -1,11 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  output: "export",      // 💛 esto hace que se genere /out al hacer next build
+  trailingSlash: true,   // 💛 mejor para hostings tipo DonWeb
   images: {
-    unoptimized: true,
+    unoptimized: true,   // 💛 necesario porque DonWeb no tiene image optimizer
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

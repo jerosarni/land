@@ -28,7 +28,7 @@ export default function Contacto() {
     setStatus("sending")
 
     try {
-      const response = await fetch("https://formsubmit.co/ajax/jerosarni@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/info@landdv.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
